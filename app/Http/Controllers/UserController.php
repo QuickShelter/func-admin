@@ -42,14 +42,10 @@ class UserController extends BaseController
         $users = $users->orderBy("id", $request->sort == "asc" ? "asc": "desc");
             if($request->has('export')) {
                 $users = $users->get();
-                if($request->role)
-                    $this->exportData($users, $request->export, $request->role);
-                else 
-                    $this->exportData($users, $request->export);
             } else {
                 $users = $users->paginate( 15, ['*'], 'page');
-                return $this->sendResponse($users, 'Returned users');
             }
+            return $this->sendResponse($users, 'Returned users');
         } catch (\Exception $e) {
             return $this->sendError('Error.', ['error' => $e->getMessage()], 400);
         }
